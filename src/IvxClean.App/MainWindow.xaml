@@ -1,0 +1,27 @@
+<Window x:Class="IvxClean.App.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="IVX Clean"
+        Width="1280" Height="820"
+        MinWidth="1024" MinHeight="700"
+        WindowStartupLocation="CenterScreen"
+        Background="#0D1114">
+    <Grid>
+        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+            <TextBlock Text="IVX Clean"
+                       Foreground="#ECF2F3"
+                       FontSize="52" FontWeight="Bold"
+                       HorizontalAlignment="Center" />
+            <TextBlock Text="Safe PC cleaner"
+                       Foreground="#A6B3B8"
+                       FontSize="20"
+                       HorizontalAlignment="Center"
+                       Margin="0,8,0,0" />
+            <TextBlock x:Name="VersionText"
+                       Foreground="#7C8A90"
+                       FontSize="13"
+                       HorizontalAlignment="Center"
+                       Margin="0,24,0,0" />
+        </StackPanel>
+    </Grid>
+</Window>

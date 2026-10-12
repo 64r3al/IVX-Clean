@@ -1,0 +1,34 @@
+## Build output
+bin/
+obj/
+publish/
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+*.user
+*.suo
+
+## Visual Studio / Rider
+.vs/
+.idea/
+*.vsidx
+
+## Test / coverage
+TestResults/
+coverage/
+*.coverage
+*.coveragexml
+
+## NuGet
+*.nupkg
+.packages/
+
+## OS
+Thumbs.db
+Desktop.ini
+
+## IVX Clean — local-only build spec and source assets (not tracked)
+MASTER_PROMPT.md
+IVX Clean-png.zip
+*.wsb.local

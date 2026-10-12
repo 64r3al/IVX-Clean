@@ -1,0 +1,11 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/IvxClean.App/IvxClean.App.csproj" />
+    <Project Path="src/IvxClean.Cli/IvxClean.Cli.csproj" />
+    <Project Path="src/IvxClean.Core/IvxClean.Core.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/IvxClean.Core.Tests/IvxClean.Core.Tests.csproj" />
+    <Project Path="tests/IvxClean.Rules.Tests/IvxClean.Rules.Tests.csproj" />
+  </Folder>
+</Solution>
