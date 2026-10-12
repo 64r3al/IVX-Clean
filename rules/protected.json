@@ -1,0 +1,29 @@
+{
+  "$comment": "IVX Clean protected file/folder patterns. The SafetyGuard denies any path matching these anywhere, even inside Temp. Over-protection is intentional: when in doubt, keep. Unit-tested in IvxClean.Core.Tests.",
+  "extensions": [
+    ".hip", ".hipnc", ".hiplc",
+    ".aep", ".aepx", ".prproj",
+    ".psd", ".psb", ".kra",
+    ".drp", ".c4d", ".max", ".mb", ".ma",
+    ".spp", ".ztl",
+    ".asd", ".wbk"
+  ],
+  "extensionPrefixes": [
+    ".blend"
+  ],
+  "fileNames": [
+    "quit.blend"
+  ],
+  "fileNamePrefixes": [
+    "~$"
+  ],
+  "folderNames": [
+    "AutoRecover",
+    "Autosave",
+    "Auto-Save",
+    "Recovery",
+    "Backup",
+    "Backups",
+    "UnsavedFiles"
+  ]
+}

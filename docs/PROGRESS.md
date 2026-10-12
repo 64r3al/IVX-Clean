@@ -5,7 +5,7 @@ Running checklist of the phased build. Updated at the end of each phase.
 | Phase | Title | Status | Notes |
 |---|---|---|---|
 | 1 | Scaffold | ✅ Done | Solution + 3 projects + 2 test projects, central package management, analyzers + warnings-as-errors, lock files, MIT license, stub README, CI workflow. Build green, 3 tests pass. |
-| 2 | Core safety | ⬜ Not started | `IPathRoots`, `SafetyGuard`, protected lists, SafetyGuard + junction test suites. |
+| 2 | Core safety | ✅ Done | `IPathRoots` (production + sandbox), `SafetyGuard` with defense-in-depth, reparse/final-path interop, Known Folders, protected patterns (`rules/protected.json`), full adversarial + junction-attack test suites. 71 tests pass. |
 | 3 | Rules engine | ⬜ Not started | Schema, loader, rule catalog, scanner, catalog tests. Scan-only run on the real machine. |
 | 4 | Cleaner & quarantine | ⬜ Not started | Plan execution, re-validation, quarantine/restore/purge, reports + tests. |
 | 5 | System operations | ⬜ Not started | Restore point, services manager + crash marker, DISM, event logs, Recycle Bin, process detection. |

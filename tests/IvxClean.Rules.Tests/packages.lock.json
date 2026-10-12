@@ -136,6 +136,12 @@
           "System.Management": "[10.0.0, )"
         }
       },
+      "ivxclean.testsupport": {
+        "type": "Project",
+        "dependencies": {
+          "IvxClean.Core": "[1.0.0, )"
+        }
+      },
       "Microsoft.Extensions.DependencyInjection.Abstractions": {
         "type": "CentralTransitive",
         "requested": "[10.0.0, )",

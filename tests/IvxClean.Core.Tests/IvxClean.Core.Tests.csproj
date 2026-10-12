@@ -20,6 +20,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\IvxClean.Core\IvxClean.Core.csproj" />
+    <ProjectReference Include="..\IvxClean.TestSupport\IvxClean.TestSupport.csproj" />
   </ItemGroup>
 
 </Project>

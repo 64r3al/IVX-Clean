@@ -5,7 +5,16 @@
     <RootNamespace>IvxClean.Core</RootNamespace>
     <AssemblyName>IvxClean.Core</AssemblyName>
     <!-- Core has NO WPF dependency. UseWPF stays off. -->
+    <!-- LibraryImport source generation emits unsafe marshalling code. -->
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
+
+  <ItemGroup>
+    <!-- The rule catalog and protected lists are embedded into Core at build. -->
+    <EmbeddedResource Include="..\..\rules\protected.json">
+      <LogicalName>IvxClean.Core.Rules.protected.json</LogicalName>
+    </EmbeddedResource>
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" />
