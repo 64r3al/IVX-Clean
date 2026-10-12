@@ -7,7 +7,7 @@ Running checklist of the phased build. Updated at the end of each phase.
 | 1 | Scaffold | ✅ Done | Solution + 3 projects + 2 test projects, central package management, analyzers + warnings-as-errors, lock files, MIT license, stub README, CI workflow. Build green, 3 tests pass. |
 | 2 | Core safety | ✅ Done | `IPathRoots` (production + sandbox), `SafetyGuard` with defense-in-depth, reparse/final-path interop, Known Folders, protected patterns (`rules/protected.json`), full adversarial + junction-attack test suites. 71 tests pass. |
 | 3 | Rules engine | ✅ Done | Rule model + JSON catalog (7 files, 30 rules), `RuleValidator` + `schema.json`, read-only `Scanner` (no reparse following, SafetyGuard per item, progress/cancellation), CLI `scan`. Real-machine scan found ~7.2 GB includable, nothing deleted. 81 tests pass. |
-| 4 | Cleaner & quarantine | ⬜ Not started | Plan execution, re-validation, quarantine/restore/purge, reports + tests. |
+| 4 | Cleaner & quarantine | ✅ Done | `Cleaner` (guard re-check → exists → not reparse → unchanged → delete/quarantine; empty-dir removal bottom-up, never the base; partial report on cancel), `QuarantineStore` (same-volume move, central manifest, restore with keep-both/skip, purge). 92 tests pass. |
 | 5 | System operations | ⬜ Not started | Restore point, services manager + crash marker, DISM, event logs, Recycle Bin, process detection. |
 | 6 | Software module | ⬜ Not started | Inventory, classifier, uninstall launcher, tests. |
 | 7 | UI | ⬜ Not started | Tokens/themes, shell, all §7 screens + states, viewmodels + tests, en/fr, accessibility. |

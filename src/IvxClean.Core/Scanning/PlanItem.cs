@@ -36,6 +36,15 @@ public sealed record PlanItem
     /// <summary>The absolute path of the item.</summary>
     public required string Path { get; init; }
 
+    /// <summary>The resolved base folder of the target this item came from (for re-validation).</summary>
+    public required string BaseFolder { get; init; }
+
+    /// <summary>The target's minimum age in hours (for re-validation).</summary>
+    public required int MinAgeHours { get; init; }
+
+    /// <summary>Whether the target base may itself be deleted when empty.</summary>
+    public required bool AllowBaseDeletion { get; init; }
+
     /// <summary>Whether the item is a directory.</summary>
     public required bool IsDirectory { get; init; }
 
