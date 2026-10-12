@@ -4,7 +4,9 @@ All notable changes to IVX Clean are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and the project uses
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [1.0.0] - 2026-10-12
+
+First public release.
 
 ### Added
 - Core safety engine: `IPathRoots`, the `SafetyGuard` (allowlist + defense in depth), protected
@@ -20,8 +22,7 @@ All notable changes to IVX Clean are documented here. The format follows
   plus Quarantine, Unwanted software, Settings and About screens.
 - Scan-only CLI, CI workflow, and generated `docs/RULES.md`.
 
-### Known gaps (pre-1.0)
-- French localization (`.resx`) and onboarding/visual polish are not yet complete.
-
-## [1.0.0] - TBD
-- First public release.
+### Known gaps
+- Expert command operations (DISM, clear event logs, empty Recycle Bin) are implemented in Core but
+  not yet wired into the UI clean flow. French localization (`.resx`), onboarding, motion, a multi-size
+  `.ico`, and code signing are deferred to a later release.
