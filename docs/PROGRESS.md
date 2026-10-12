@@ -8,7 +8,7 @@ Running checklist of the phased build. Updated at the end of each phase.
 | 2 | Core safety | ✅ Done | `IPathRoots` (production + sandbox), `SafetyGuard` with defense-in-depth, reparse/final-path interop, Known Folders, protected patterns (`rules/protected.json`), full adversarial + junction-attack test suites. 71 tests pass. |
 | 3 | Rules engine | ✅ Done | Rule model + JSON catalog (7 files, 30 rules), `RuleValidator` + `schema.json`, read-only `Scanner` (no reparse following, SafetyGuard per item, progress/cancellation), CLI `scan`. Real-machine scan found ~7.2 GB includable, nothing deleted. 81 tests pass. |
 | 4 | Cleaner & quarantine | ✅ Done | `Cleaner` (guard re-check → exists → not reparse → unchanged → delete/quarantine; empty-dir removal bottom-up, never the base; partial report on cancel), `QuarantineStore` (same-volume move, central manifest, restore with keep-both/skip, purge). 92 tests pass. |
-| 5 | System operations | ⬜ Not started | Restore point, services manager + crash marker, DISM, event logs, Recycle Bin, process detection. |
+| 5 | System operations | ✅ Done | `ServicesManager` (stop→action→restore-in-finally + crash-recovery marker), `IServiceController` (Windows + fake), WMI restore point (with frequency-limit/protection-disabled detection), DISM StartComponentCleanup runner, event-log clear, Recycle Bin (SHQuery/SHEmpty), reboot/servicing probe. All behind interfaces. 100 tests pass. |
 | 6 | Software module | ⬜ Not started | Inventory, classifier, uninstall launcher, tests. |
 | 7 | UI | ⬜ Not started | Tokens/themes, shell, all §7 screens + states, viewmodels + tests, en/fr, accessibility. |
 | 8 | Polish | ⬜ Not started | Motion, onboarding, settings, update check, CLI, icons, large-tree perf check. |

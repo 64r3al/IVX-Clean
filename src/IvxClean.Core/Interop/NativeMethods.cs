@@ -46,4 +46,23 @@ internal static partial class NativeMethods
         uint dwFlags,
         IntPtr hToken,
         out IntPtr ppszPath);
+
+    // --- Recycle Bin -------------------------------------------------------
+    internal const uint SHERB_NOCONFIRMATION = 0x00000001;
+    internal const uint SHERB_NOPROGRESSUI = 0x00000002;
+    internal const uint SHERB_NOSOUND = 0x00000004;
+
+    [StructLayout(LayoutKind.Sequential)]
+    internal struct SHQUERYRBINFO
+    {
+        internal uint cbSize;
+        internal long i64Size;
+        internal long i64NumItems;
+    }
+
+    [LibraryImport("shell32.dll", EntryPoint = "SHQueryRecycleBinW", StringMarshalling = StringMarshalling.Utf16)]
+    internal static partial int SHQueryRecycleBin(string? pszRootPath, ref SHQUERYRBINFO pSHQueryRBInfo);
+
+    [LibraryImport("shell32.dll", EntryPoint = "SHEmptyRecycleBinW", StringMarshalling = StringMarshalling.Utf16)]
+    internal static partial int SHEmptyRecycleBin(IntPtr hwnd, string? pszRootPath, uint dwFlags);
 }
