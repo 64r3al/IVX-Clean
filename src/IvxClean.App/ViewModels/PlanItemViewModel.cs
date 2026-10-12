@@ -35,6 +35,9 @@ public sealed partial class PlanItemViewModel : ObservableObject
     /// <summary>Whether this item can be cleaned (and therefore toggled).</summary>
     public bool IsIncludable => Item.Decision == PlanDecision.Include;
 
+    /// <summary>The category this item belongs to (used for grouping in the list view).</summary>
+    public string Category => Item.Category;
+
     /// <summary>The leaf file/folder name.</summary>
     public string Name => Path.GetFileName(Item.Path.TrimEnd('\\', '/')) is { Length: > 0 } n ? n : Item.Path;
 

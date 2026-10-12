@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
+using System.ComponentModel;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Data;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using IvxClean.App.Services;
@@ -76,6 +78,25 @@ public sealed partial class ReviewViewModel : ObservableObject
     /// <summary>Every row (includable, protected and skipped), flattened.</summary>
     public IReadOnlyList<PlanItemViewModel> AllItems => _allItems;
 
+    private ICollectionView? _itemsView;
+
+    /// <summary>A grouped, filtered, virtualizable view of all rows for the list (built lazily on the UI thread).</summary>
+    public ICollectionView ItemsView
+    {
+        get
+        {
+            if (_itemsView is null)
+            {
+                var source = new CollectionViewSource { Source = _allItems };
+                source.GroupDescriptions.Add(new PropertyGroupDescription(nameof(PlanItemViewModel.Category)));
+                _itemsView = source.View;
+                _itemsView.Filter = PassesFilter;
+            }
+
+            return _itemsView;
+        }
+    }
+
     /// <summary>The available risk filters (for the segmented control).</summary>
     public ReviewFilter[] Filters { get; } = [ReviewFilter.All, ReviewFilter.Safe, ReviewFilter.Caution, ReviewFilter.Expert];
 
@@ -115,14 +136,37 @@ public sealed partial class ReviewViewModel : ObservableObject
     /// <summary>Human text for the deleted-vs-quarantined split.</summary>
     public string SplitText => $"{ByteSize.Humanize(DeleteBytes)} deleted · {ByteSize.Humanize(QuarantineBytes)} to Quarantine";
 
-    partial void OnFilterChanged(ReviewFilter value) => ApplyFilter();
-
-    /// <summary>Selects or clears every includable row in a group.</summary>
-    [RelayCommand]
-    private void ToggleGroup(RuleGroupViewModel group)
+    partial void OnFilterChanged(ReviewFilter value)
     {
-        bool target = group.AllSelected != true;
-        group.SetAll(target);
+        ApplyFilter();
+        _itemsView?.Refresh();
+    }
+
+    private bool PassesFilter(object obj)
+    {
+        if (obj is not PlanItemViewModel item)
+        {
+            return true;
+        }
+
+        return Filter switch
+        {
+            ReviewFilter.Safe => item.Item.Risk == RuleRisk.Safe,
+            ReviewFilter.Caution => item.Item.Risk == RuleRisk.Caution,
+            ReviewFilter.Expert => item.Item.Risk == RuleRisk.Expert,
+            _ => true,
+        };
+    }
+
+    /// <summary>Selects or clears every includable row in the named category group.</summary>
+    [RelayCommand]
+    private void ToggleGroup(string category)
+    {
+        RuleGroupViewModel? group = Groups.FirstOrDefault(g => string.Equals(g.Category, category, StringComparison.Ordinal));
+        if (group is not null)
+        {
+            group.SetAll(group.AllSelected != true);
+        }
     }
 
     /// <summary>Exports the selected file list as text.</summary>
@@ -193,7 +237,11 @@ public sealed partial class ReviewViewModel : ObservableObject
                 }
             }
 
-            CleanReport report = await RunCleanAsync(selected).ConfigureAwait(true);
+            var cleaning = new CleaningViewModel();
+            _services.Navigation.Show(cleaning);
+            var progress = new Progress<CleanProgress>(cleaning.Update);
+
+            CleanReport report = await RunCleanAsync(selected, progress).ConfigureAwait(true);
             _services.Navigation.Show(new ReportViewModel(report, _services.Navigation));
         }
         finally
@@ -202,13 +250,13 @@ public sealed partial class ReviewViewModel : ObservableObject
         }
     }
 
-    private async Task<CleanReport> RunCleanAsync(List<PlanItem> selected)
+    private async Task<CleanReport> RunCleanAsync(List<PlanItem> selected, IProgress<CleanProgress> progress)
     {
         CleanReport? report = null;
         var options = new CleanOptions { Description = $"Level {_plan.Level} clean" };
 
         async Task DoCleanAsync(CancellationToken ct)
-            => report = await _services!.Cleaner.CleanAsync(selected, options, null, ct).ConfigureAwait(false);
+            => report = await _services!.Cleaner.CleanAsync(selected, options, progress, ct).ConfigureAwait(false);
 
         bool needsUpdateServices = selected.Any(i => string.Equals(i.Category, "Windows Update", StringComparison.Ordinal));
         if (needsUpdateServices)

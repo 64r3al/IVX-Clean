@@ -6,6 +6,7 @@
     <DataTemplate DataType="{x:Type vm:DashboardViewModel}"><views:DashboardView /></DataTemplate>
     <DataTemplate DataType="{x:Type vm:ScanViewModel}"><views:ScanView /></DataTemplate>
     <DataTemplate DataType="{x:Type vm:ReviewViewModel}"><views:ReviewView /></DataTemplate>
+    <DataTemplate DataType="{x:Type vm:CleaningViewModel}"><views:CleaningView /></DataTemplate>
     <DataTemplate DataType="{x:Type vm:ReportViewModel}"><views:ReportView /></DataTemplate>
     <DataTemplate DataType="{x:Type vm:QuarantineViewModel}"><views:QuarantineView /></DataTemplate>
     <DataTemplate DataType="{x:Type vm:SoftwareViewModel}"><views:SoftwareView /></DataTemplate>

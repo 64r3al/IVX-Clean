@@ -39,6 +39,29 @@ public partial class App : Application
 
         Services = BuildServices();
 
+        // Logging + global exception handling, so a runtime error is recorded and surfaced
+        // instead of silently freezing or crashing the app.
+        var roots = Services.GetRequiredService<IPathRoots>();
+        AppLog.Initialize(roots.AppDataRoot);
+        AppLog.Info("IVX Clean starting.");
+        DispatcherUnhandledException += OnDispatcherUnhandledException;
+        AppDomain.CurrentDomain.UnhandledException += (_, args) =>
+        {
+            if (args.ExceptionObject is Exception ex)
+            {
+                AppLog.Error(ex, "AppDomain.UnhandledException");
+            }
+            else
+            {
+                AppLog.Info($"AppDomain.UnhandledException: {args.ExceptionObject}");
+            }
+        };
+        System.Threading.Tasks.TaskScheduler.UnobservedTaskException += (_, args) =>
+        {
+            AppLog.Error(args.Exception, "UnobservedTaskException");
+            args.SetObserved();
+        };
+
         // Recover any services a previous crash left stopped; purge expired quarantine.
         var settings = Services.GetRequiredService<ISettingsService>();
         Services.GetRequiredService<IServicesManager>().RecoverIfCrashed();
@@ -103,9 +126,20 @@ public partial class App : Application
         return s.BuildServiceProvider();
     }
 
+    private void OnDispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
+    {
+        AppLog.Error(e.Exception, "DispatcherUnhandledException");
+        e.Handled = true; // keep the app alive
+        MessageBox.Show(
+            $"Something went wrong, but IVX Clean kept running. A log was written to:\n{AppLog.LogDirectory}\n\n{e.Exception.Message}",
+            "IVX Clean", MessageBoxButton.OK, MessageBoxImage.Warning);
+    }
+
     /// <inheritdoc />
     protected override void OnExit(ExitEventArgs e)
     {
+        AppLog.Info("IVX Clean exiting.");
+        AppLog.Shutdown();
         (Services as IDisposable)?.Dispose();
         _singleInstanceMutex?.Dispose();
         _singleInstanceMutex = null;

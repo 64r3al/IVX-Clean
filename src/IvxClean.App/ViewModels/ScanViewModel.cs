@@ -1,5 +1,6 @@
 using System;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -64,13 +65,21 @@ public sealed partial class ScanViewModel : ObservableObject, IDisposable
 
         try
         {
+            AppLog.Info($"Scan started (level {level}, expert {includeExpert}).");
             CleanPlan plan = await _scanner.ScanAsync(level, includeExpert, progress, _cts.Token).ConfigureAwait(true);
             IsScanning = false;
+            AppLog.Info($"Scan finished: {plan.Includable.Count()} includable items, {ByteSize.Humanize(plan.IncludableBytes)}.");
             _navigation.Show(new ReviewViewModel(plan, _reviewServices));
         }
         catch (OperationCanceledException)
         {
             IsScanning = false;
+        }
+        catch (Exception ex)
+        {
+            IsScanning = false;
+            AppLog.Error(ex, "Scan failed");
+            throw;
         }
     }
 
