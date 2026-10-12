@@ -34,6 +34,11 @@ jobs:
       - name: Build (warnings as errors)
         run: dotnet build -c Release --no-restore -warnaserror
 
+      - name: Check docs/RULES.md is up to date
+        run: |
+          dotnet run --project tools/RulesDocGen -c Release --no-build -- docs/RULES.md
+          git diff --exit-code -- docs/RULES.md
+
       - name: Test (with coverage)
         run: >
           dotnet test -c Release --no-build

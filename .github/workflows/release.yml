@@ -1,0 +1,69 @@
+name: Release
+
+on:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    name: Build, package & publish release
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - name: Setup .NET 10
+        uses: actions/setup-dotnet@67a3573c9a986a3f9c594539f4ab511d57bb3ce9 # v4.3.1
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Derive version from tag
+        id: ver
+        shell: pwsh
+        run: |
+          $v = "${{ github.ref_name }}".TrimStart('v')
+          "version=$v" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
+
+      - name: Restore
+        run: dotnet restore --locked-mode
+
+      - name: Test
+        run: dotnet test -c Release
+
+      - name: Publish (win-x64 and win-arm64)
+        shell: pwsh
+        run: |
+          foreach ($rid in 'win-x64','win-arm64') {
+            dotnet publish src/IvxClean.App/IvxClean.App.csproj `
+              -c Release -r $rid --self-contained `
+              -p:Version=${{ steps.ver.outputs.version }} `
+              -p:PublishSingleFile=true -p:PublishReadyToRun=true `
+              -p:EnableCompressionInSingleFile=true -p:PublishTrimmed=false `
+              -o "publish/$rid"
+            Compress-Archive -Path "publish/$rid/*" -DestinationPath "artifacts/IVXClean-$rid.zip" -Force
+          }
+
+      # Code signing is not available yet. When a certificate is provisioned, sign here before hashing:
+      # - name: Sign
+      #   run: signtool sign /fd SHA256 /tr http://timestamp.digicert.com /td SHA256 /f cert.pfx /p ${{ secrets.CERT_PASSWORD }} publish/win-x64/IVXClean.exe
+
+      - name: Checksums
+        shell: pwsh
+        run: |
+          Get-FileHash artifacts/*.zip -Algorithm SHA256 |
+            ForEach-Object { "{0}  {1}" -f $_.Hash.ToLower(), (Split-Path $_.Path -Leaf) } |
+            Out-File -Encoding ascii artifacts/SHA256SUMS.txt
+          Get-Content artifacts/SHA256SUMS.txt
+
+      - name: Create GitHub release
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          $notes = "See CHANGELOG.md for details. Unsigned build — verify against SHA256SUMS.txt and use 'More info -> Run anyway' past SmartScreen."
+          gh release create ${{ github.ref_name }} artifacts/*.zip artifacts/SHA256SUMS.txt `
+            --title "IVX Clean ${{ github.ref_name }}" --notes "$notes"

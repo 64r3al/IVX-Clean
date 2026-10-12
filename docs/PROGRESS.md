@@ -12,7 +12,7 @@ Running checklist of the phased build. Updated at the end of each phase.
 | 6 | Software module | ✅ Done | Registry inventory (HKLM 64/WOW/HKCU) + filter (SystemComponent/ParentKeyName/ReleaseType/DisplayName), AppX source (frameworks/resource/system excluded), `SoftwareClassifier` (bloatware → never-list → maybe → keep) with `software.json`, `UninstallCommand` parser (CommandLineToArgvW, MSI /I→/X), registry + AppX uninstaller (current user only). 135 tests pass. |
 | 7 | UI | 🟡 Mostly done | WPF-UI shell (FluentWindow, Mica, sidebar), dark+light design tokens (§7.2), MVVM + DI host, the full scan→review→confirm→clean→report flow wired to the real engine, plus Dashboard, Quarantine, Unwanted software, Settings, About. App launches cleanly. ReviewViewModel selection/filter/select-all tested (6 tests). **Gaps:** French localization (.resx) not yet added (UI strings are English, formatted with current culture); onboarding and some visual polish pending (Phase 8). |
 | 8 | Polish | ⬜ Not started | Motion, onboarding, settings, update check, CLI, icons, large-tree perf check. |
-| 9 | Docs & release | ⬜ Not started | README, RULES.md generator, ARCHITECTURE, QA checklist, sandbox config, templates, release workflow. |
+| 9 | Docs & release | ✅ Done | Full README (features, levels, SmartScreen + SHA-256, build/FAQ), `RulesDocGen` → `docs/RULES.md` (CI checks it's current), ARCHITECTURE (+mermaid), QA checklist, `IVXClean.wsb` sandbox, CONTRIBUTING/SECURITY/CHANGELOG, issue/PR templates, `release.yml` (self-contained single-file win-x64 + win-arm64, SHA256SUMS, GitHub release). Publish dry-run produced a working single-file exe. |
 | 10 | Final review | ⬜ Not started | Hostile self-review, re-run tests, then ask before tagging v1.0.0. |
 
 ## Environment

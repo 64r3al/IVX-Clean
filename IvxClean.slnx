@@ -10,4 +10,7 @@
     <Project Path="tests/IvxClean.Rules.Tests/IvxClean.Rules.Tests.csproj" />
     <Project Path="tests/IvxClean.TestSupport/IvxClean.TestSupport.csproj" />
   </Folder>
+  <Folder Name="/tools/">
+    <Project Path="tools/RulesDocGen/RulesDocGen.csproj" />
+  </Folder>
 </Solution>
