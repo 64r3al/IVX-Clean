@@ -1,0 +1,96 @@
+{
+  "rules": [
+    {
+      "id": "comms.discord.cache",
+      "name": "Discord cache",
+      "category": "App & game caches",
+      "level": 2,
+      "risk": "safe",
+      "action": "delete",
+      "detect": { "anyExists": ["{RoamingAppData}\\discord", "{RoamingAppData}\\discordptb", "{RoamingAppData}\\discordcanary"] },
+      "targets": [
+        { "base": "{RoamingAppData}\\discord", "subPaths": ["Cache", "Code Cache", "GPUCache"], "minAgeHours": 0 },
+        { "base": "{RoamingAppData}\\discordptb", "subPaths": ["Cache", "Code Cache", "GPUCache"], "minAgeHours": 0 },
+        { "base": "{RoamingAppData}\\discordcanary", "subPaths": ["Cache", "Code Cache", "GPUCache"], "minAgeHours": 0 }
+      ],
+      "requiresClosed": ["discord.exe", "discordptb.exe", "discordcanary.exe"],
+      "why": "Discord's web cache (Stable, PTB and Canary). Your login, servers and messages are never touched.",
+      "sources": ["Discord is an Electron app; its Chromium caches live in Cache / Code Cache / GPUCache under %APPDATA%\\discord*."]
+    },
+    {
+      "id": "comms.slack.cache",
+      "name": "Slack cache",
+      "category": "App & game caches",
+      "level": 2,
+      "risk": "safe",
+      "action": "delete",
+      "detect": { "anyExists": ["{RoamingAppData}\\Slack"] },
+      "targets": [
+        { "base": "{RoamingAppData}\\Slack", "subPaths": ["Cache", "Code Cache", "GPUCache"], "minAgeHours": 0 }
+      ],
+      "requiresClosed": ["slack.exe"],
+      "why": "Slack's web cache. Your workspaces, messages and sign-in are never touched.",
+      "sources": ["Slack is an Electron app; its Chromium caches live under %APPDATA%\\Slack."]
+    },
+    {
+      "id": "comms.teams.classic.cache",
+      "name": "Microsoft Teams (classic) cache",
+      "category": "App & game caches",
+      "level": 2,
+      "risk": "safe",
+      "action": "delete",
+      "detect": { "anyExists": ["{RoamingAppData}\\Microsoft\\Teams"] },
+      "targets": [
+        { "base": "{RoamingAppData}\\Microsoft\\Teams", "subPaths": ["Cache", "Code Cache", "GPUCache"], "minAgeHours": 0 }
+      ],
+      "requiresClosed": ["Teams.exe"],
+      "why": "Classic Teams web cache. Your chats and sign-in are never touched.",
+      "sources": ["Classic Teams is an Electron app; its caches live under %APPDATA%\\Microsoft\\Teams."]
+    },
+    {
+      "id": "comms.spotify.cache",
+      "name": "Spotify cache",
+      "category": "App & game caches",
+      "level": 2,
+      "risk": "safe",
+      "action": "delete",
+      "detect": { "anyExists": ["{LocalAppData}\\Spotify\\Data"] },
+      "targets": [
+        { "base": "{LocalAppData}\\Spotify\\Data", "minAgeHours": 0 }
+      ],
+      "requiresClosed": ["Spotify.exe"],
+      "why": "Spotify's streaming data cache. Your account, playlists and downloads are never touched.",
+      "sources": ["Spotify's media cache is stored under %LOCALAPPDATA%\\Spotify\\Data (Storage/Data); it is rebuilt on playback."]
+    },
+    {
+      "id": "dev.vscode.cache",
+      "name": "VS Code cache",
+      "category": "App & game caches",
+      "level": 2,
+      "risk": "safe",
+      "action": "delete",
+      "detect": { "anyExists": ["{RoamingAppData}\\Code"] },
+      "targets": [
+        { "base": "{RoamingAppData}\\Code", "subPaths": ["CachedData", "Cache", "GPUCache", "Code Cache"], "minAgeHours": 0 }
+      ],
+      "requiresClosed": ["Code.exe"],
+      "why": "VS Code's cached data. Your settings, extensions and workspaces are never touched.",
+      "sources": ["VS Code (Electron) stores CachedData / Cache / GPUCache under %APPDATA%\\Code; these are regenerated."]
+    },
+    {
+      "id": "dev.cursor.cache",
+      "name": "Cursor cache",
+      "category": "App & game caches",
+      "level": 2,
+      "risk": "safe",
+      "action": "delete",
+      "detect": { "anyExists": ["{RoamingAppData}\\Cursor"] },
+      "targets": [
+        { "base": "{RoamingAppData}\\Cursor", "subPaths": ["CachedData", "Cache", "GPUCache", "Code Cache"], "minAgeHours": 0 }
+      ],
+      "requiresClosed": ["Cursor.exe"],
+      "why": "Cursor's cached data. Your settings, extensions and workspaces are never touched.",
+      "sources": ["Cursor (VS Code / Electron based) stores CachedData / Cache / GPUCache under %APPDATA%\\Cursor."]
+    }
+  ]
+}

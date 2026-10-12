@@ -6,7 +6,7 @@ Running checklist of the phased build. Updated at the end of each phase.
 |---|---|---|---|
 | 1 | Scaffold | ✅ Done | Solution + 3 projects + 2 test projects, central package management, analyzers + warnings-as-errors, lock files, MIT license, stub README, CI workflow. Build green, 3 tests pass. |
 | 2 | Core safety | ✅ Done | `IPathRoots` (production + sandbox), `SafetyGuard` with defense-in-depth, reparse/final-path interop, Known Folders, protected patterns (`rules/protected.json`), full adversarial + junction-attack test suites. 71 tests pass. |
-| 3 | Rules engine | ⬜ Not started | Schema, loader, rule catalog, scanner, catalog tests. Scan-only run on the real machine. |
+| 3 | Rules engine | ✅ Done | Rule model + JSON catalog (7 files, 30 rules), `RuleValidator` + `schema.json`, read-only `Scanner` (no reparse following, SafetyGuard per item, progress/cancellation), CLI `scan`. Real-machine scan found ~7.2 GB includable, nothing deleted. 81 tests pass. |
 | 4 | Cleaner & quarantine | ⬜ Not started | Plan execution, re-validation, quarantine/restore/purge, reports + tests. |
 | 5 | System operations | ⬜ Not started | Restore point, services manager + crash marker, DISM, event logs, Recycle Bin, process detection. |
 | 6 | Software module | ⬜ Not started | Inventory, classifier, uninstall launcher, tests. |
@@ -21,6 +21,12 @@ Running checklist of the phased build. Updated at the end of each phase.
 - Repo: https://github.com/64r3al/IVX-Clean (public, `main`)
 - Push cadence: push to `origin/main` at the end of each green phase.
 
-## Rules deliberately left out
+## Rules deliberately left out (per the prime directive: when in doubt, leave it out)
 
-_(Tracked here as the catalog is built, per the prime directive: when in doubt, leave it out.)_
+- **Steam web cache & per-game shadercache** — live inside the Steam install folder, which is usually `Program Files (x86)` (a protected, no-touch tree) and whose location varies per machine. Cleaning inside a program's install directory violates the guard. Left out of v1.
+- **Riot / Rockstar launcher caches** — cache/log locations are inconsistent across versions and not reliably a pure cache. Left out pending verification.
+- **New Teams, Zoom caches** — packaged (MSIX) `LocalCache` / uncertain Zoom cache path; risk of touching app state. Classic Teams is included; new Teams deferred.
+- **Blender `%TEMP%` cache folders** — the general user-temp rule already prunes stale temp files, and `.blend`/autosave files are guard-protected; a dedicated rule added risk without benefit.
+- **DaVinci Resolve CacheClip** — location not reliably provable; left out as the prompt directs.
+- **Delivery Optimization cache** — best cleared via the official `Delete-DeliveryOptimizationCache` cmdlet; deferred to the command-runner phase.
+- **npm / pip / yarn / dotnet nuget dev caches** — these are `command` rules that shell out to each tool's own cleaner; deferred to the system-operations/command phase (Phase 5) so they are executed safely, not half-implemented.

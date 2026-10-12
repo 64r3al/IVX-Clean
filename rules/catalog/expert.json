@@ -1,0 +1,51 @@
+{
+  "rules": [
+    {
+      "id": "expert.prefetch",
+      "name": "Prefetch data",
+      "category": "Windows",
+      "level": 4,
+      "risk": "expert",
+      "action": "delete",
+      "detect": { "anyExists": ["{Windows}\\Prefetch"] },
+      "targets": [
+        { "base": "{Windows}\\Prefetch", "fileGlobs": ["*.pf"], "minAgeHours": 0 }
+      ],
+      "why": "Windows Prefetch records that speed up app and boot launches. Windows rebuilds them, but boot and the first few app launches will be slower for a while.",
+      "sources": ["%SystemRoot%\\Prefetch holds *.pf trace files that Windows regenerates automatically; deleting them only slows the next launches."]
+    },
+    {
+      "id": "expert.dism.componentcleanup",
+      "name": "Windows component store cleanup (DISM)",
+      "category": "Windows",
+      "level": 4,
+      "risk": "expert",
+      "action": "command",
+      "command": "DismComponentCleanup",
+      "why": "Runs DISM StartComponentCleanup to remove superseded Windows update components from WinSxS. It never resets the base, so you keep the ability to uninstall updates. Can take a long time.",
+      "sources": ["DISM /Online /Cleanup-Image /StartComponentCleanup is the supported way to reclaim WinSxS space. https://learn.microsoft.com/windows-hardware/manufacture/desktop/clean-up-the-winsxs-folder"]
+    },
+    {
+      "id": "expert.eventlogs",
+      "name": "Clear Windows event logs",
+      "category": "Windows",
+      "level": 4,
+      "risk": "expert",
+      "action": "command",
+      "command": "ClearEventLogs",
+      "why": "Clears the Windows event logs. This frees a little space but erases troubleshooting history, so it is off by default.",
+      "sources": ["Event logs are cleared via the EventLog API; this is a standard administrative action that discards diagnostic history."]
+    },
+    {
+      "id": "expert.recyclebin",
+      "name": "Empty the Recycle Bin",
+      "category": "Windows",
+      "level": 4,
+      "risk": "expert",
+      "action": "command",
+      "command": "RecycleBin",
+      "why": "Permanently empties the Recycle Bin on all drives. This cannot be undone, so it is off by default and must be selected explicitly.",
+      "sources": ["SHEmptyRecycleBin is the documented API for emptying the Recycle Bin. https://learn.microsoft.com/windows/win32/api/shellapi/nf-shellapi-shemptyrecyclebinw"]
+    }
+  ]
+}

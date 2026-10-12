@@ -1,0 +1,35 @@
+{
+  "rules": [
+    {
+      "id": "game.fivem.cache",
+      "name": "FiveM / RedM cache & logs",
+      "category": "App & game caches",
+      "level": 3,
+      "risk": "safe",
+      "action": "delete",
+      "detect": { "anyExists": ["{LocalAppData}\\FiveM\\FiveM.app"] },
+      "targets": [
+        { "base": "{LocalAppData}\\FiveM\\FiveM.app", "subPaths": ["data\\cache", "data\\server-cache", "data\\server-cache-priv", "logs", "crashes"], "minAgeHours": 0 }
+      ],
+      "requiresClosed": ["FiveM.exe", "FiveM_b2802_GTAProcess.exe"],
+      "why": "FiveM/RedM download caches, server caches and logs only. Your game-storage, mods, plugins and citizen folders are never touched.",
+      "sources": ["CitizenFX (FiveM) stores re-downloadable caches under FiveM.app\\data\\cache, server-cache and server-cache-priv, plus logs and crashes; these are rebuilt on next launch."]
+    },
+    {
+      "id": "creative.adobe.mediacache",
+      "name": "Adobe media cache",
+      "category": "App & game caches",
+      "level": 3,
+      "risk": "caution",
+      "action": "quarantine",
+      "detect": { "anyExists": ["{RoamingAppData}\\Adobe\\Common\\Media Cache Files", "{RoamingAppData}\\Adobe\\Common\\Media Cache"] },
+      "targets": [
+        { "base": "{RoamingAppData}\\Adobe\\Common\\Media Cache Files", "minAgeHours": 0 },
+        { "base": "{RoamingAppData}\\Adobe\\Common\\Media Cache", "minAgeHours": 0 }
+      ],
+      "requiresClosed": ["Adobe Premiere Pro.exe", "AfterFX.exe", "Adobe Media Encoder.exe"],
+      "why": "Adobe's conformed media cache (Premiere Pro, After Effects). Rebuilt automatically; projects re-open fine but may take longer the first time. Moved to Quarantine so it can be restored.",
+      "sources": ["Adobe stores conformed/peak media cache under %APPDATA%\\Adobe\\Common\\Media Cache Files and Media Cache; Adobe documents clearing it to reclaim space. https://helpx.adobe.com/premiere-pro/kb/clean-media-cache.html"]
+    }
+  ]
+}

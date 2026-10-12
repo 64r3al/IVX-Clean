@@ -1,0 +1,113 @@
+{
+  "rules": [
+    {
+      "id": "browser.chrome.cache",
+      "name": "Google Chrome cache",
+      "category": "Browser caches",
+      "level": 2,
+      "risk": "safe",
+      "action": "delete",
+      "detect": { "anyExists": ["{LocalAppData}\\Google\\Chrome\\User Data"] },
+      "targets": [
+        { "base": "{LocalAppData}\\Google\\Chrome\\User Data", "profileDirs": { "requireFile": "Preferences" }, "subPaths": ["Cache", "Code Cache", "GPUCache"], "minAgeHours": 0 },
+        { "base": "{LocalAppData}\\Google\\Chrome\\User Data", "subPaths": ["ShaderCache", "GrShaderCache", "GraphiteDawnCache"], "minAgeHours": 0 }
+      ],
+      "requiresClosed": ["chrome.exe"],
+      "why": "Cached web files only, for every Chrome profile. Passwords, cookies, history, bookmarks and extensions are never touched.",
+      "sources": ["Chromium stores HTTP/code/GPU caches in each profile's Cache, Code Cache and GPUCache folders, separate from user data. https://www.chromium.org/developers/design-documents/network-stack/disk-cache/"]
+    },
+    {
+      "id": "browser.edge.cache",
+      "name": "Microsoft Edge cache",
+      "category": "Browser caches",
+      "level": 2,
+      "risk": "safe",
+      "action": "delete",
+      "detect": { "anyExists": ["{LocalAppData}\\Microsoft\\Edge\\User Data"] },
+      "targets": [
+        { "base": "{LocalAppData}\\Microsoft\\Edge\\User Data", "profileDirs": { "requireFile": "Preferences" }, "subPaths": ["Cache", "Code Cache", "GPUCache"], "minAgeHours": 0 },
+        { "base": "{LocalAppData}\\Microsoft\\Edge\\User Data", "subPaths": ["ShaderCache", "GrShaderCache", "GraphiteDawnCache"], "minAgeHours": 0 }
+      ],
+      "requiresClosed": ["msedge.exe"],
+      "why": "Cached web files only, for every Edge profile. Passwords, cookies, history, favorites and extensions are never touched.",
+      "sources": ["Edge is Chromium-based and uses the same per-profile Cache / Code Cache / GPUCache layout."]
+    },
+    {
+      "id": "browser.brave.cache",
+      "name": "Brave cache",
+      "category": "Browser caches",
+      "level": 2,
+      "risk": "safe",
+      "action": "delete",
+      "detect": { "anyExists": ["{LocalAppData}\\BraveSoftware\\Brave-Browser\\User Data"] },
+      "targets": [
+        { "base": "{LocalAppData}\\BraveSoftware\\Brave-Browser\\User Data", "profileDirs": { "requireFile": "Preferences" }, "subPaths": ["Cache", "Code Cache", "GPUCache"], "minAgeHours": 0 },
+        { "base": "{LocalAppData}\\BraveSoftware\\Brave-Browser\\User Data", "subPaths": ["ShaderCache", "GrShaderCache", "GraphiteDawnCache"], "minAgeHours": 0 }
+      ],
+      "requiresClosed": ["brave.exe"],
+      "why": "Cached web files only, for every Brave profile. Passwords, cookies, history and extensions are never touched.",
+      "sources": ["Brave is Chromium-based and uses the same per-profile cache layout."]
+    },
+    {
+      "id": "browser.vivaldi.cache",
+      "name": "Vivaldi cache",
+      "category": "Browser caches",
+      "level": 2,
+      "risk": "safe",
+      "action": "delete",
+      "detect": { "anyExists": ["{LocalAppData}\\Vivaldi\\User Data"] },
+      "targets": [
+        { "base": "{LocalAppData}\\Vivaldi\\User Data", "profileDirs": { "requireFile": "Preferences" }, "subPaths": ["Cache", "Code Cache", "GPUCache"], "minAgeHours": 0 },
+        { "base": "{LocalAppData}\\Vivaldi\\User Data", "subPaths": ["ShaderCache", "GrShaderCache", "GraphiteDawnCache"], "minAgeHours": 0 }
+      ],
+      "requiresClosed": ["vivaldi.exe"],
+      "why": "Cached web files only, for every Vivaldi profile. Passwords, cookies, history and extensions are never touched.",
+      "sources": ["Vivaldi is Chromium-based and uses the same per-profile cache layout."]
+    },
+    {
+      "id": "browser.opera.cache",
+      "name": "Opera cache",
+      "category": "Browser caches",
+      "level": 2,
+      "risk": "safe",
+      "action": "delete",
+      "detect": { "anyExists": ["{LocalAppData}\\Opera Software\\Opera Stable"] },
+      "targets": [
+        { "base": "{LocalAppData}\\Opera Software\\Opera Stable", "subPaths": ["Cache", "Code Cache", "GPUCache"], "minAgeHours": 0 }
+      ],
+      "requiresClosed": ["opera.exe"],
+      "why": "Opera's cached web files. Passwords, cookies, history and extensions are never touched.",
+      "sources": ["Opera (Chromium-based) stores its disk caches under %LOCALAPPDATA%\\Opera Software\\Opera Stable."]
+    },
+    {
+      "id": "browser.operagx.cache",
+      "name": "Opera GX cache",
+      "category": "Browser caches",
+      "level": 2,
+      "risk": "safe",
+      "action": "delete",
+      "detect": { "anyExists": ["{LocalAppData}\\Opera Software\\Opera GX Stable"] },
+      "targets": [
+        { "base": "{LocalAppData}\\Opera Software\\Opera GX Stable", "subPaths": ["Cache", "Code Cache", "GPUCache"], "minAgeHours": 0 }
+      ],
+      "requiresClosed": ["opera.exe"],
+      "why": "Opera GX's cached web files. Passwords, cookies, history and extensions are never touched.",
+      "sources": ["Opera GX (Chromium-based) stores its disk caches under %LOCALAPPDATA%\\Opera Software\\Opera GX Stable."]
+    },
+    {
+      "id": "browser.firefox.cache",
+      "name": "Firefox cache",
+      "category": "Browser caches",
+      "level": 2,
+      "risk": "safe",
+      "action": "delete",
+      "detect": { "anyExists": ["{LocalAppData}\\Mozilla\\Firefox\\Profiles"] },
+      "targets": [
+        { "base": "{LocalAppData}\\Mozilla\\Firefox\\Profiles", "profileDirs": {}, "subPaths": ["cache2", "startupCache"], "minAgeHours": 0 }
+      ],
+      "requiresClosed": ["firefox.exe"],
+      "why": "Firefox's disk and startup caches, for every profile. Passwords, cookies, history, bookmarks and add-ons are never touched.",
+      "sources": ["Firefox stores its network cache in each profile's cache2 folder and its startup cache in startupCache, both under %LOCALAPPDATA%\\Mozilla\\Firefox\\Profiles."]
+    }
+  ]
+}

@@ -1,0 +1,80 @@
+{
+  "rules": [
+    {
+      "id": "launcher.epic.webcache",
+      "name": "Epic Games Launcher web cache",
+      "category": "App & game caches",
+      "level": 2,
+      "risk": "safe",
+      "action": "delete",
+      "detect": { "anyExists": ["{LocalAppData}\\EpicGamesLauncher\\Saved"] },
+      "targets": [
+        { "base": "{LocalAppData}\\EpicGamesLauncher\\Saved", "subPaths": ["webcache", "webcache_4147", "webcache_4430"], "minAgeHours": 0 }
+      ],
+      "requiresClosed": ["EpicGamesLauncher.exe"],
+      "why": "The Epic launcher's embedded-browser cache. Your games, saves and library are never touched.",
+      "sources": ["Epic Games Launcher stores its CEF web cache under %LOCALAPPDATA%\\EpicGamesLauncher\\Saved\\webcache*."]
+    },
+    {
+      "id": "launcher.battlenet.cache",
+      "name": "Battle.net cache",
+      "category": "App & game caches",
+      "level": 2,
+      "risk": "safe",
+      "action": "delete",
+      "detect": { "anyExists": ["{LocalAppData}\\Battle.net\\Cache", "{ProgramData}\\Battle.net\\Cache"] },
+      "targets": [
+        { "base": "{LocalAppData}\\Battle.net\\Cache", "minAgeHours": 0 },
+        { "base": "{ProgramData}\\Battle.net\\Cache", "minAgeHours": 0 }
+      ],
+      "requiresClosed": ["Battle.net.exe"],
+      "why": "The Battle.net client's web cache. Your games and account are never touched.",
+      "sources": ["Battle.net stores its browser cache under %LOCALAPPDATA%\\Battle.net\\Cache and %ProgramData%\\Battle.net\\Cache; Blizzard support recommends clearing it."]
+    },
+    {
+      "id": "launcher.ubisoft.cache",
+      "name": "Ubisoft Connect cache",
+      "category": "App & game caches",
+      "level": 2,
+      "risk": "safe",
+      "action": "delete",
+      "detect": { "anyExists": ["{LocalAppData}\\Ubisoft Game Launcher\\cache"] },
+      "targets": [
+        { "base": "{LocalAppData}\\Ubisoft Game Launcher\\cache", "minAgeHours": 0 }
+      ],
+      "requiresClosed": ["UbisoftConnect.exe", "upc.exe"],
+      "why": "Ubisoft Connect's cache. Your games, saves and account are never touched.",
+      "sources": ["Ubisoft Connect stores its cache under %LOCALAPPDATA%\\Ubisoft Game Launcher\\cache; Ubisoft support recommends clearing it."]
+    },
+    {
+      "id": "launcher.ea.cache",
+      "name": "EA app cache",
+      "category": "App & game caches",
+      "level": 2,
+      "risk": "safe",
+      "action": "delete",
+      "detect": { "anyExists": ["{LocalAppData}\\Electronic Arts\\EA Desktop\\CEF"] },
+      "targets": [
+        { "base": "{LocalAppData}\\Electronic Arts\\EA Desktop\\CEF", "minAgeHours": 0 }
+      ],
+      "requiresClosed": ["EADesktop.exe"],
+      "why": "The EA app's embedded-browser cache. Your games, saves and account are never touched.",
+      "sources": ["The EA app (EA Desktop) stores its CEF browser cache under %LOCALAPPDATA%\\Electronic Arts\\EA Desktop\\CEF."]
+    },
+    {
+      "id": "launcher.gog.webcache",
+      "name": "GOG Galaxy web cache",
+      "category": "App & game caches",
+      "level": 2,
+      "risk": "safe",
+      "action": "delete",
+      "detect": { "anyExists": ["{ProgramData}\\GOG.com\\Galaxy\\webcache"] },
+      "targets": [
+        { "base": "{ProgramData}\\GOG.com\\Galaxy\\webcache", "minAgeHours": 0 }
+      ],
+      "requiresClosed": ["GalaxyClient.exe"],
+      "why": "GOG Galaxy's embedded-browser cache. Your games, saves and account are never touched.",
+      "sources": ["GOG Galaxy stores its web cache under %ProgramData%\\GOG.com\\Galaxy\\webcache."]
+    }
+  ]
+}
