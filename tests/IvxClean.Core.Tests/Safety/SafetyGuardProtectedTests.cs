@@ -80,14 +80,42 @@ public sealed class SafetyGuardProtectedTests : IDisposable
         decision.IsDenied.ShouldBeTrue();
     }
 
+    [Theory]
+    [InlineData("drive")]
+    [InlineData("windows")]
+    [InlineData("localappdata")]
+    [InlineData("profile")]
+    public void A_rule_base_that_is_a_broad_root_is_refused(string which)
+    {
+        string baseFolder = which switch
+        {
+            "drive" => _roots.SystemDrive,
+            "windows" => _roots.Windows,
+            "localappdata" => _roots.LocalAppData,
+            "profile" => _roots.UserProfile,
+            _ => throw new ArgumentOutOfRangeException(nameof(which)),
+        };
+        // A file sits directly inside the broad root — it must NOT be cleanable.
+        string file = Path.Combine(baseFolder, "victim.bin");
+        File.WriteAllText(file, "x");
+        SafetyGuard guard = GuardFactory.Build(_roots);
+
+        SafetyDecision decision = guard.Evaluate(file, new SafetyTarget(baseFolder));
+
+        decision.IsDenied.ShouldBeTrue();
+        decision.Reason.ShouldBe(DenyReason.ProtectedSystemLocation);
+    }
+
     [Fact]
     public void Protected_user_folders_are_denied()
     {
-        string documents = _roots.Dir("Users/tester/Documents");
-        string file = _roots.File("Users/tester/Documents/thesis.txt");
+        // A protected personal folder redirected to sit inside an otherwise-cleanable location.
+        string cleanBase = _roots.Dir("LocalAppData/App/Data");
+        string documents = _roots.Dir("LocalAppData/App/Data/Documents");
+        string file = _roots.File("LocalAppData/App/Data/Documents/thesis.txt");
         SafetyGuard guard = GuardFactory.Build(_roots, protectedUserFolders: [documents]);
 
-        SafetyDecision decision = guard.Evaluate(file, new SafetyTarget(_roots.UserProfile));
+        SafetyDecision decision = guard.Evaluate(file, new SafetyTarget(cleanBase));
 
         decision.IsDenied.ShouldBeTrue();
         decision.Reason.ShouldBe(DenyReason.ProtectedUserFolder);
@@ -96,11 +124,12 @@ public sealed class SafetyGuardProtectedTests : IDisposable
     [Fact]
     public void User_defined_protected_folders_are_denied()
     {
-        string secrets = _roots.Dir("Users/tester/MyGameSaves");
-        string file = _roots.File("Users/tester/MyGameSaves/slot1.sav");
+        string cleanBase = _roots.Dir("LocalAppData/App/Data");
+        string secrets = _roots.Dir("LocalAppData/App/Data/MyGameSaves");
+        string file = _roots.File("LocalAppData/App/Data/MyGameSaves/slot1.sav");
         SafetyGuard guard = GuardFactory.Build(_roots, userDefinedProtectedFolders: [secrets]);
 
-        SafetyDecision decision = guard.Evaluate(file, new SafetyTarget(_roots.UserProfile));
+        SafetyDecision decision = guard.Evaluate(file, new SafetyTarget(cleanBase));
 
         decision.IsDenied.ShouldBeTrue();
         decision.Reason.ShouldBe(DenyReason.UserProtectedFolder);

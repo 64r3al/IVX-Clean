@@ -17,6 +17,13 @@ public static partial class RuleValidator
         "{Windows}", "{SystemDrive}", "{UserProfile}", "{EachUserProfile}", "{EachFixedDrive}",
     ];
 
+    // Bare bases on these tokens are refused: they are drive/container roots, not specific caches.
+    private static readonly string[] BroadTokens =
+    [
+        "{SystemDrive}", "{Windows}", "{ProgramData}", "{UserProfile}", "{LocalAppData}",
+        "{RoamingAppData}", "{LocalLowAppData}", "{EachUserProfile}", "{EachFixedDrive}",
+    ];
+
     /// <summary>Returns every validation error found in the catalog (empty when valid).</summary>
     public static IReadOnlyList<string> Validate(RuleCatalog catalog)
     {
@@ -113,6 +120,13 @@ public static partial class RuleValidator
             if (!KnownTokens.Contains(token))
             {
                 errors.Add($"{where}: unknown path token '{token}' in target base.");
+            }
+
+            // A base that is a bare broad token (a drive/container root) with no subfolder is too broad.
+            bool bareToken = string.Equals(target.Base, token, StringComparison.Ordinal) && target.SubPaths.Count == 0;
+            if (bareToken && BroadTokens.Contains(token))
+            {
+                errors.Add($"{where}: base '{token}' is too broad; target a specific subfolder.");
             }
 
             if (target.MinAgeHours < 0)

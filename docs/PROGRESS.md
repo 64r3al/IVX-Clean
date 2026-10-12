@@ -13,7 +13,18 @@ Running checklist of the phased build. Updated at the end of each phase.
 | 7 | UI | 🟡 Mostly done | WPF-UI shell (FluentWindow, Mica, sidebar), dark+light design tokens (§7.2), MVVM + DI host, the full scan→review→confirm→clean→report flow wired to the real engine, plus Dashboard, Quarantine, Unwanted software, Settings, About. App launches cleanly. ReviewViewModel selection/filter/select-all tested (6 tests). **Gaps:** French localization (.resx) not yet added (UI strings are English, formatted with current culture); onboarding and some visual polish pending (Phase 8). |
 | 8 | Polish | 🟡 Partial | Settings screen, update-check (opens latest release), CLI scan, and a **large-tree performance test** (10k files scanned well under the 30s bound; cancellation verified) are done. Logo as `design/logo.svg`. **Deferred:** `.ico` generation from SVG, subtle motion, first-run onboarding cards, and French `.resx` localization. |
 | 9 | Docs & release | ✅ Done | Full README (features, levels, SmartScreen + SHA-256, build/FAQ), `RulesDocGen` → `docs/RULES.md` (CI checks it's current), ARCHITECTURE (+mermaid), QA checklist, `IVXClean.wsb` sandbox, CONTRIBUTING/SECURITY/CHANGELOG, issue/PR templates, `release.yml` (self-contained single-file win-x64 + win-arm64, SHA256SUMS, GitHub release). Publish dry-run produced a working single-file exe. |
-| 10 | Final review | ⬜ Not started | Hostile self-review, re-run tests, then ask before tagging v1.0.0. |
+| 10 | Final review | 🟡 Review done — awaiting tag | Hostile review of the delete path. **Finding fixed:** the guard (and `RuleValidator`) now refuse a rule base that resolves to a drive root or broad container root (items directly inside were otherwise allowed); 4 new tests. All 149 tests pass. **Not yet done:** awaiting your go to tag `v1.0.0`. |
+
+## Known limitations for v1.0
+
+- **Expert command operations** (DISM cleanup, clear event logs, empty Recycle Bin) are implemented and
+  tested in Core behind interfaces, but are **not yet wired into the UI clean flow** (the file-based
+  Expert rule, Prefetch, works). Deferred to v1.1.
+- **French localization** (`.resx`) not yet added; UI strings are English.
+- **Onboarding, subtle motion, and a multi-size `.ico`** (from `design/logo.svg`) are deferred polish.
+- **Code signing** is not set up (unsigned build; SmartScreen note + SHA-256 verification documented).
+- Restore-point / DISM / event-log / Recycle Bin paths run only on a real machine and so are covered by
+  the manual Windows Sandbox QA checklist, not automated tests (per the no-real-clean dev rule).
 
 ## Environment
 

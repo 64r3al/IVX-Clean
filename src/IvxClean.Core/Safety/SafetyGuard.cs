@@ -99,6 +99,14 @@ public sealed class SafetyGuard : ISafetyGuard
             return SafetyDecision.Deny(DenyReason.Unresolvable, "Rule base folder is invalid.");
         }
 
+        // Defense in depth: refuse a base that is itself a drive root or a broad container root
+        // (e.g. a bare drive, Windows, ProgramData, a profile or an AppData root). Cleaning directly
+        // inside those is never safe; a legitimate rule always targets a specific subfolder.
+        if (IsTooBroadBase(baseFinal))
+        {
+            return SafetyDecision.Deny(DenyReason.ProtectedSystemLocation, "The rule's base folder is too broad to clean safely.");
+        }
+
         // 4. The candidate itself must not be a reparse point.
         if (PathResolver.IsReparsePoint(lexical))
         {
@@ -416,6 +424,25 @@ public sealed class SafetyGuard : ISafetyGuard
 
     private static bool PathEquals(string a, string b)
         => string.Equals(a, b, StringComparison.OrdinalIgnoreCase);
+
+    private bool IsTooBroadBase(string baseFinal)
+    {
+        string? root = Path.GetPathRoot(baseFinal);
+        if (root is not null && PathEquals(Path.TrimEndingDirectorySeparator(root), baseFinal))
+        {
+            return true; // a drive root
+        }
+
+        foreach (string container in _containerRoots)
+        {
+            if (PathEquals(baseFinal, container))
+            {
+                return true; // a protected container root (Windows, ProgramData, profile, AppData, …)
+            }
+        }
+
+        return false;
+    }
 
     private static bool IsInside(string child, string parent)
     {
