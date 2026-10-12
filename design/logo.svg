@@ -1,0 +1,13 @@
+<svg width="256" height="256" viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="IVX Clean logo">
+  <!-- IVX Clean logo: rounded mint square, dark four-point sparkle, dot top-right. Made by IVX. -->
+  <rect x="8" y="8" width="240" height="240" rx="72" fill="#4FE3C1"/>
+  <!-- Four-point sparkle -->
+  <path d="M128 52
+           C136 100 156 120 204 128
+           C156 136 136 156 128 204
+           C120 156 100 136 52 128
+           C100 120 120 100 128 52 Z"
+        fill="#03251D"/>
+  <!-- Top-right dot -->
+  <circle cx="196" cy="60" r="16" fill="#03251D"/>
+</svg>
