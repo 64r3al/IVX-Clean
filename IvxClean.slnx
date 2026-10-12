@@ -5,6 +5,7 @@
     <Project Path="src/IvxClean.Core/IvxClean.Core.csproj" />
   </Folder>
   <Folder Name="/tests/">
+    <Project Path="tests/IvxClean.App.Tests/IvxClean.App.Tests.csproj" />
     <Project Path="tests/IvxClean.Core.Tests/IvxClean.Core.Tests.csproj" />
     <Project Path="tests/IvxClean.Rules.Tests/IvxClean.Rules.Tests.csproj" />
     <Project Path="tests/IvxClean.TestSupport/IvxClean.TestSupport.csproj" />

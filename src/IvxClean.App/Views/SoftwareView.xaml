@@ -1,0 +1,57 @@
+<UserControl x:Class="IvxClean.App.Views.SoftwareView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <UserControl.Resources>
+        <DataTemplate x:Key="SoftwareListTemplate">
+            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                <ItemsControl ItemsSource="{Binding}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border Style="{StaticResource Card}" Margin="0,0,0,8" Padding="14">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <StackPanel Grid.Column="0">
+                                        <TextBlock Text="{Binding Name}" Style="{StaticResource Text.Section}" />
+                                        <TextBlock Style="{StaticResource Text.Caption}">
+                                            <Run Text="{Binding Publisher, Mode=OneWay}"/><Run Text="   "/><Run Text="{Binding SizeText, Mode=OneWay}"/>
+                                        </TextBlock>
+                                    </StackPanel>
+                                    <Button Grid.Column="1" Content="Uninstall…" Style="{StaticResource QuietButton}" VerticalAlignment="Center"
+                                            Command="{Binding DataContext.UninstallCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                            CommandParameter="{Binding}" />
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </ScrollViewer>
+        </DataTemplate>
+    </UserControl.Resources>
+
+    <DockPanel Margin="40,32,40,40">
+        <StackPanel DockPanel.Dock="Top">
+            <TextBlock Text="Unwanted software" Style="{StaticResource Text.Title}" />
+            <TextBlock Text="Nothing is removed automatically. You choose each app, and its own official uninstaller runs." Style="{StaticResource Text.Caption}" Margin="0,2,0,8" />
+            <TextBlock Text="Loading installed software…" Style="{StaticResource Text.Body}"
+                       Visibility="{Binding IsLoading, Converter={StaticResource BoolToVisibility}}" />
+        </StackPanel>
+        <DockPanel DockPanel.Dock="Bottom" LastChildFill="False" Margin="0,8,0,0">
+            <TextBlock DockPanel.Dock="Left" Style="{StaticResource Text.Caption}"
+                       Text="🛡 Hidden for safety: drivers, GPU software, Visual C++ and .NET runtimes, DirectX and Windows components." />
+        </DockPanel>
+        <TabControl Background="Transparent" BorderThickness="0">
+            <TabItem Header="Known bloatware">
+                <ContentControl Content="{Binding KnownBloatware}" ContentTemplate="{StaticResource SoftwareListTemplate}" />
+            </TabItem>
+            <TabItem Header="Maybe unwanted">
+                <ContentControl Content="{Binding MaybeUnwanted}" ContentTemplate="{StaticResource SoftwareListTemplate}" />
+            </TabItem>
+            <TabItem Header="Keep">
+                <ContentControl Content="{Binding Keep}" ContentTemplate="{StaticResource SoftwareListTemplate}" />
+            </TabItem>
+        </TabControl>
+    </DockPanel>
+</UserControl>

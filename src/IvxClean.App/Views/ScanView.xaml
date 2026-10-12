@@ -1,0 +1,17 @@
+<UserControl x:Class="IvxClean.App.Views.ScanView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml">
+    <Grid Margin="40,32,40,40">
+        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" MaxWidth="560">
+            <ui:ProgressRing IsIndeterminate="False" Progress="{Binding Percent}" Width="160" Height="160" HorizontalAlignment="Center" />
+            <TextBlock Style="{StaticResource Text.Title}" HorizontalAlignment="Center" Margin="0,20,0,0">
+                <Run Text="Found so far " /><Run Text="{Binding FoundText, Mode=OneWay}" />
+            </TextBlock>
+            <TextBlock Text="Only reading for now, nothing is being deleted." Style="{StaticResource Text.Caption}" HorizontalAlignment="Center" Margin="0,6,0,0" />
+            <TextBlock Text="{Binding CurrentPath}" Style="{StaticResource Text.Path}" HorizontalAlignment="Center" Margin="0,12,0,0" MaxWidth="520" />
+            <Button Content="Cancel scan" Style="{StaticResource QuietButton}" HorizontalAlignment="Center" Margin="0,24,0,0"
+                    Command="{Binding CancelCommand}" />
+        </StackPanel>
+    </Grid>
+</UserControl>

@@ -1,0 +1,35 @@
+<UserControl x:Class="IvxClean.App.Views.AboutView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="40,32,40,40">
+        <StackPanel MaxWidth="720" HorizontalAlignment="Left">
+            <Border Width="72" Height="72" CornerRadius="20" Background="{DynamicResource Brush.Accent}" HorizontalAlignment="Left">
+                <TextBlock Text="✦" FontSize="40" Foreground="{DynamicResource Brush.AccentInk}" HorizontalAlignment="Center" VerticalAlignment="Center" />
+            </Border>
+            <TextBlock Text="IVX Clean" Style="{StaticResource Text.Title}" Margin="0,16,0,0" />
+            <TextBlock Text="{Binding VersionLine}" Style="{StaticResource Text.Caption}" Margin="0,2,0,16" />
+
+            <StackPanel Orientation="Horizontal">
+                <Button Content="View on GitHub" Style="{StaticResource QuietButton}" Command="{Binding ViewOnGitHubCommand}" Margin="0,0,8,0" />
+                <Button Content="Check for updates" Style="{StaticResource QuietButton}" Command="{Binding CheckForUpdatesCommand}" />
+            </StackPanel>
+
+            <Border Style="{StaticResource Card}" Margin="0,20,0,0">
+                <StackPanel>
+                    <TextBlock Text="Our promise" Style="{StaticResource Text.Section}" Margin="0,0,0,8" />
+                    <ItemsControl ItemsSource="{Binding Promises}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal" Margin="0,3">
+                                    <TextBlock Text="✓" Foreground="{DynamicResource Brush.Accent}" FontWeight="Bold" Margin="0,0,8,0" />
+                                    <TextBlock Text="{Binding}" Style="{StaticResource Text.Body}" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                    <TextBlock Text="Open source under the MIT License · Free forever" Style="{StaticResource Text.Caption}" Margin="0,12,0,0" />
+                </StackPanel>
+            </Border>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

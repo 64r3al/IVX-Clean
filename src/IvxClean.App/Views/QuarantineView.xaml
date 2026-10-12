@@ -1,0 +1,40 @@
+<UserControl x:Class="IvxClean.App.Views.QuarantineView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <DockPanel Margin="40,32,40,40">
+        <StackPanel DockPanel.Dock="Top">
+            <TextBlock Text="Quarantine" Style="{StaticResource Text.Title}" />
+            <TextBlock Text="Items are deleted for good after their days run out. Restore anything before then." Style="{StaticResource Text.Caption}" Margin="0,2,0,16" />
+            <TextBlock Text="Your PC is already fresh — nothing is in quarantine." Style="{StaticResource Text.Body}"
+                       Visibility="{Binding IsEmpty, Converter={StaticResource BoolToVisibility}}" />
+        </StackPanel>
+        <ScrollViewer VerticalScrollBarVisibility="Auto">
+            <ItemsControl ItemsSource="{Binding Runs}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Border Style="{StaticResource Card}" Margin="0,0,0,10">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <StackPanel Grid.Column="0">
+                                    <TextBlock Text="{Binding Description}" Style="{StaticResource Text.Section}" />
+                                    <TextBlock Style="{StaticResource Text.Caption}">
+                                        <Run Text="{Binding DateText, Mode=OneWay}"/><Run Text=" · "/><Run Text="{Binding ItemCount, Mode=OneWay}"/><Run Text=" items · "/><Run Text="{Binding SizeText, Mode=OneWay}"/><Run Text=" · "/><Run Text="{Binding DaysLeft, Mode=OneWay}"/><Run Text=" days left"/>
+                                    </TextBlock>
+                                </StackPanel>
+                                <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                                    <Button Content="Restore" Style="{StaticResource QuietButton}" Margin="0,0,8,0"
+                                            Command="{Binding DataContext.RestoreCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}" CommandParameter="{Binding}" />
+                                    <Button Content="Delete now" Style="{StaticResource QuietButton}"
+                                            Command="{Binding DataContext.DeleteNowCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}" CommandParameter="{Binding}" />
+                                </StackPanel>
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+    </DockPanel>
+</UserControl>

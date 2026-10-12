@@ -10,6 +10,9 @@
     <ApplicationIcon>Assets\ivxclean.ico</ApplicationIcon>
     <!-- Icon is added in the UI phase; keep the build tolerant until then. -->
     <ApplicationIcon Condition="!Exists('Assets\ivxclean.ico')"></ApplicationIcon>
+    <!-- UI-layer analyzer frictions: bindable/command members need not be static (CA1822), and
+         display formatting intentionally uses the current UI culture (CA1305). -->
+    <NoWarn>$(NoWarn);CA1822;CA1305</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>

@@ -1,0 +1,45 @@
+<UserControl x:Class="IvxClean.App.Views.SettingsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="40,32,40,40">
+        <StackPanel MaxWidth="720" HorizontalAlignment="Left">
+            <TextBlock Text="Settings" Style="{StaticResource Text.Title}" Margin="0,0,0,16" />
+
+            <Border Style="{StaticResource Card}" Margin="0,0,0,12">
+                <StackPanel>
+                    <TextBlock Text="Appearance" Style="{StaticResource Text.Section}" Margin="0,0,0,8" />
+                    <TextBlock Text="Theme" Style="{StaticResource Text.Body}" />
+                    <ComboBox ItemsSource="{Binding Themes}" SelectedItem="{Binding SelectedTheme, Mode=TwoWay}" Width="200" HorizontalAlignment="Left" Margin="0,4,0,0" />
+                </StackPanel>
+            </Border>
+
+            <Border Style="{StaticResource Card}" Margin="0,0,0,12">
+                <StackPanel>
+                    <TextBlock Text="Safety" Style="{StaticResource Text.Section}" Margin="0,0,0,8" />
+                    <CheckBox Content="Create a restore point before cleaning" IsChecked="{Binding CreateRestorePoint, Mode=TwoWay}" Margin="0,2" />
+                    <CheckBox Content="Show the Expert level" IsChecked="{Binding ShowExpertLevel, Mode=TwoWay}" Margin="0,2" />
+                    <TextBlock Text="Minimum age for temp files (hours)" Style="{StaticResource Text.Body}" Margin="0,10,0,2" />
+                    <TextBox Text="{Binding TempMinimumAgeHours, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Width="100" HorizontalAlignment="Left" />
+                </StackPanel>
+            </Border>
+
+            <Border Style="{StaticResource Card}" Margin="0,0,0,12">
+                <StackPanel>
+                    <TextBlock Text="Quarantine" Style="{StaticResource Text.Section}" Margin="0,0,0,8" />
+                    <TextBlock Text="Keep quarantined items for (days)" Style="{StaticResource Text.Body}" Margin="0,0,0,2" />
+                    <TextBox Text="{Binding QuarantineDays, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Width="100" HorizontalAlignment="Left" />
+                </StackPanel>
+            </Border>
+
+            <Border Style="{StaticResource Card}">
+                <StackPanel>
+                    <TextBlock Text="Data" Style="{StaticResource Text.Section}" Margin="0,0,0,8" />
+                    <StackPanel Orientation="Horizontal">
+                        <Button Content="Open logs folder" Style="{StaticResource QuietButton}" Command="{Binding OpenLogsCommand}" Margin="0,0,8,0" />
+                        <Button Content="Reset settings" Style="{StaticResource QuietButton}" Command="{Binding ResetSettingsCommand}" />
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

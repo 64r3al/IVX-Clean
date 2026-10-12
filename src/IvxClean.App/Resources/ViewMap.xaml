@@ -1,0 +1,15 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:vm="clr-namespace:IvxClean.App.ViewModels"
+                    xmlns:views="clr-namespace:IvxClean.App.Views">
+
+    <DataTemplate DataType="{x:Type vm:DashboardViewModel}"><views:DashboardView /></DataTemplate>
+    <DataTemplate DataType="{x:Type vm:ScanViewModel}"><views:ScanView /></DataTemplate>
+    <DataTemplate DataType="{x:Type vm:ReviewViewModel}"><views:ReviewView /></DataTemplate>
+    <DataTemplate DataType="{x:Type vm:ReportViewModel}"><views:ReportView /></DataTemplate>
+    <DataTemplate DataType="{x:Type vm:QuarantineViewModel}"><views:QuarantineView /></DataTemplate>
+    <DataTemplate DataType="{x:Type vm:SoftwareViewModel}"><views:SoftwareView /></DataTemplate>
+    <DataTemplate DataType="{x:Type vm:SettingsViewModel}"><views:SettingsView /></DataTemplate>
+    <DataTemplate DataType="{x:Type vm:AboutViewModel}"><views:AboutView /></DataTemplate>
+
+</ResourceDictionary>

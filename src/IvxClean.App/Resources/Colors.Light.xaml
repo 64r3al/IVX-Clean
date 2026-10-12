@@ -1,0 +1,28 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!-- IVX Clean light theme tokens (§7.2). Made by IVX. -->
+    <SolidColorBrush x:Key="Brush.Bg" Color="#F4F7F7" />
+    <SolidColorBrush x:Key="Brush.TitleBar" Color="#EBF0F0" />
+    <SolidColorBrush x:Key="Brush.Surface" Color="#FFFFFF" />
+    <SolidColorBrush x:Key="Brush.SurfaceRaised" Color="#F0F4F4" />
+    <SolidColorBrush x:Key="Brush.Border" Color="#D9E2E4" />
+    <SolidColorBrush x:Key="Brush.BorderStrong" Color="#C4D0D3" />
+    <SolidColorBrush x:Key="Brush.Divider" Color="#E3EAEB" />
+    <SolidColorBrush x:Key="Brush.Text" Color="#10181B" />
+    <SolidColorBrush x:Key="Brush.TextMuted" Color="#4B5A60" />
+    <SolidColorBrush x:Key="Brush.TextSubtle" Color="#6B7A80" />
+    <SolidColorBrush x:Key="Brush.Accent" Color="#2FCFA9" />
+    <SolidColorBrush x:Key="Brush.AccentHover" Color="#27B896" />
+    <SolidColorBrush x:Key="Brush.AccentInk" Color="#0B7A63" />
+    <SolidColorBrush x:Key="Brush.SafeText" Color="#0B7A63" />
+    <SolidColorBrush x:Key="Brush.SafeBg" Color="#2FCFA9" Opacity="0.14" />
+    <SolidColorBrush x:Key="Brush.Caution" Color="#B7790F" />
+    <SolidColorBrush x:Key="Brush.CautionText" Color="#8A5B07" />
+    <SolidColorBrush x:Key="Brush.CautionBg" Color="#B7790F" Opacity="0.14" />
+    <SolidColorBrush x:Key="Brush.Expert" Color="#C24A3A" />
+    <SolidColorBrush x:Key="Brush.ExpertText" Color="#9E3326" />
+    <SolidColorBrush x:Key="Brush.ExpertBg" Color="#C24A3A" Opacity="0.12" />
+    <SolidColorBrush x:Key="Brush.Danger" Color="#C42B1C" />
+
+</ResourceDictionary>

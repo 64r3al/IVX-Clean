@@ -1,0 +1,95 @@
+<UserControl x:Class="IvxClean.App.Views.ReviewView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:scanning="clr-namespace:IvxClean.Core.Scanning;assembly=IvxClean.Core">
+    <Grid Margin="40,24,40,24">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="320" />
+        </Grid.ColumnDefinitions>
+
+        <!-- Left: groups -->
+        <DockPanel Grid.Column="0" Margin="0,0,24,0">
+            <StackPanel DockPanel.Dock="Top">
+                <TextBlock Text="Review before cleaning" Style="{StaticResource Text.Title}" />
+                <TextBlock Style="{StaticResource Text.Caption}" Margin="0,2,0,12">
+                    <Run Text="Found "/><Run Text="{Binding FoundCount, Mode=OneWay}"/><Run Text=" items · Untick anything you want to keep."/>
+                </TextBlock>
+                <ComboBox ItemsSource="{Binding Filters}" SelectedItem="{Binding Filter, Mode=TwoWay}" Width="160" HorizontalAlignment="Left" Margin="0,0,0,12" />
+            </StackPanel>
+
+            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                <ItemsControl ItemsSource="{Binding Groups}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border Style="{StaticResource Card}" Margin="0,0,0,12">
+                                <StackPanel>
+                                    <Grid>
+                                        <StackPanel Orientation="Horizontal">
+                                            <CheckBox IsChecked="{Binding AllSelected, Mode=OneWay}" IsThreeState="True" VerticalAlignment="Center"
+                                                      Command="{Binding DataContext.ToggleGroupCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                                      CommandParameter="{Binding}" />
+                                            <TextBlock Text="{Binding Category}" Style="{StaticResource Text.Section}" Margin="8,0,0,0" VerticalAlignment="Center" />
+                                        </StackPanel>
+                                        <TextBlock Style="{StaticResource Text.Caption}" HorizontalAlignment="Right" VerticalAlignment="Center">
+                                            <Run Text="{Binding IncludableCount, Mode=OneWay}"/><Run Text=" · "/><Run Text="{Binding SizeText, Mode=OneWay}"/>
+                                        </TextBlock>
+                                    </Grid>
+                                    <ItemsControl ItemsSource="{Binding Items}" Margin="0,8,0,0">
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <Grid Margin="0,3">
+                                                    <Grid.Style>
+                                                        <Style TargetType="Grid">
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding IsVisible}" Value="False">
+                                                                    <Setter Property="Visibility" Value="Collapsed" />
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </Grid.Style>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="Auto" />
+                                                        <ColumnDefinition Width="*" />
+                                                        <ColumnDefinition Width="Auto" />
+                                                    </Grid.ColumnDefinitions>
+                                                    <CheckBox Grid.Column="0" IsChecked="{Binding IsSelected, Mode=TwoWay}" VerticalAlignment="Center"
+                                                              IsEnabled="{Binding IsIncludable}" />
+                                                    <StackPanel Grid.Column="1" Margin="8,0,0,0">
+                                                        <TextBlock Text="{Binding Name}" Style="{StaticResource Text.Body}" />
+                                                        <TextBlock Text="{Binding FullPath}" Style="{StaticResource Text.Path}" ToolTip="{Binding FullPath}" />
+                                                    </StackPanel>
+                                                    <TextBlock Grid.Column="2" Text="{Binding SizeText}" Style="{StaticResource Text.Caption}" VerticalAlignment="Center" />
+                                                </Grid>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                </StackPanel>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </ScrollViewer>
+        </DockPanel>
+
+        <!-- Right: sticky summary -->
+        <Border Grid.Column="1" Style="{StaticResource Card}" VerticalAlignment="Top">
+            <StackPanel>
+                <TextBlock Text="Selected to clean" Style="{StaticResource Text.Caption}" />
+                <TextBlock Text="{Binding CleanButtonText}" Style="{StaticResource Text.ReportFigure}" />
+                <TextBlock Style="{StaticResource Text.Caption}" Margin="0,0,0,12">
+                    <Run Text="of "/><Run Text="{Binding FoundCount, Mode=OneWay}"/><Run Text=" found"/>
+                </TextBlock>
+                <TextBlock Text="{Binding SplitText}" Style="{StaticResource Text.Caption}" />
+                <TextBlock Style="{StaticResource Text.Caption}" Margin="0,2,0,12">
+                    <Run Text="{Binding SkippedOrProtectedCount, Mode=OneWay}"/><Run Text=" skipped or protected"/>
+                </TextBlock>
+                <CheckBox Content="Create a restore point first" IsChecked="{Binding CreateRestorePoint, Mode=TwoWay}" Margin="0,0,0,4" />
+                <TextBlock Text="Lets Windows roll back if anything feels off." Style="{StaticResource Text.Caption}" Margin="0,0,0,16" />
+                <Button Content="{Binding CleanButtonText}" Style="{StaticResource PrimaryButton}" Command="{Binding CleanCommand}"
+                        IsEnabled="{Binding HasSelection}" AutomationProperties.Name="Clean selected items" />
+                <Button Content="Export list as text" Style="{StaticResource QuietButton}" Command="{Binding ExportListCommand}" Margin="0,8,0,0" />
+            </StackPanel>
+        </Border>
+    </Grid>
+</UserControl>
