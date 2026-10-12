@@ -1,0 +1,32 @@
+{
+  "$comment": "IVX Clean software classification. Matchers are case-insensitive substring matches on DisplayName / Publisher. Order of precedence is knownBloatware, then neverList, then maybeUnwanted, then Keep (bloatware wins so a 'Driver Updater' is never hidden by a driver matcher). neverList is hidden entirely and can never be uninstalled from the app.",
+  "knownBloatware": {
+    "names": [
+      "Ask Toolbar", "Babylon", "Web Companion", "WinZip Driver Updater", "Driver Booster",
+      "Advanced SystemCare", "PC Accelerate", "Search Protect", "MyPC Backup", "Wondershare Driver",
+      "Driver Updater", "PC Optimizer Pro", "Reimage", "MacKeeper", "One System Care"
+    ],
+    "publishers": []
+  },
+  "neverList": {
+    "names": [
+      "Microsoft Visual C++", "Visual C++ Redistributable", "Microsoft .NET", ".NET Runtime", ".NET Host",
+      ".NET SDK", "DirectX", "Microsoft Edge", "WebView2", "Windows SDK", "Windows Software Development Kit",
+      "Microsoft Store", "App Installer", "Windows Security", "Microsoft Defender", "Xbox", "Game Bar",
+      "Gaming Services", "Easy Anti-Cheat", "EasyAntiCheat", "BattlEye", "Riot Vanguard", "Vanguard",
+      "EA AntiCheat", "FACEIT", "GeForce", "NVIDIA", "Radeon", "Intel(R) ", "HD Graphics",
+      "Windows Driver Package", "Realtek High Definition Audio", "IVX Clean",
+      "Steam", "Epic Games Launcher", "Battle.net", "Ubisoft Connect", "EA app", "GOG Galaxy", "Riot Client"
+    ],
+    "publishers": [
+      "NVIDIA", "Advanced Micro Devices", "Intel(R) Corporation", "Realtek Semiconductor"
+    ]
+  },
+  "maybeUnwanted": {
+    "names": [
+      "Toolbar", "Trial", "McAfee WebAdvisor", "Norton Security Scan", "Coupon", "Shopping Assistant",
+      "System Mechanic", "CCleaner", "Registry Cleaner", "PC Cleaner", "Driver Updater", "Speedup"
+    ],
+    "publishers": []
+  }
+}

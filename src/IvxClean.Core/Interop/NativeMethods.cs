@@ -65,4 +65,11 @@ internal static partial class NativeMethods
 
     [LibraryImport("shell32.dll", EntryPoint = "SHEmptyRecycleBinW", StringMarshalling = StringMarshalling.Utf16)]
     internal static partial int SHEmptyRecycleBin(IntPtr hwnd, string? pszRootPath, uint dwFlags);
+
+    // --- CommandLineToArgvW (uninstall-string parsing) ---------------------
+    [LibraryImport("shell32.dll", EntryPoint = "CommandLineToArgvW", SetLastError = true, StringMarshalling = StringMarshalling.Utf16)]
+    internal static partial IntPtr CommandLineToArgv(string lpCmdLine, out int pNumArgs);
+
+    [LibraryImport("kernel32.dll", SetLastError = true)]
+    internal static partial IntPtr LocalFree(IntPtr hMem);
 }
